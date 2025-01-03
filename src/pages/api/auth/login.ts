@@ -10,17 +10,16 @@ const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'Dj2T1oa2nzx0ndBQ6LRfRiGjAyL4vfipve2PCGBwZl8=';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    // CORS Headers
+    console.log("ere")
     res.setHeader('Access-Control-Allow-Origin', apiURL);
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
     // Handle preflight OPTIONS request
     if (req.method === 'OPTIONS') {
-        res.setHeader('Access-Control-Max-Age', '86400'); // Cache preflight request
-        return res.status(204).end();
+      res.status(200).end();
+      return;
     }
-
     if (req.method === 'POST') {
         const { email, password } = req.body;
 

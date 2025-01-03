@@ -2,19 +2,28 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { apiURL } from '../../../utils/constants/constants';
 
+
+// Initialize Prisma Client
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  
-  res.setHeader('Access-Control-Allow-Origin', apiURL);
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log("eer")
+  res.setHeader('Access-Control-Allow-Origin', apiURL);
+  res.setHeader('Access-Control-Allow-Methods', 'POST, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  console.log("eer")
+
+  // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Max-Age', '86400'); // Cache preflight request
     return res.status(204).end();
-  }
-
+  } 
   if (req.method === 'POST') {
     const { title, description, startTime, endTime, creatorId } = req.body;
 
@@ -27,7 +36,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           endTime: new Date(endTime),
           createdByRole: 'Wereda',
           createdByWeredaId: creatorId,
-          createdById: creatorId
+          createdById: creatorId,
+          status: "To Do"
         }
       });
 

@@ -17,16 +17,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } 
 
   if (req.method === 'GET') {
-    const { id } = req.query;
+    const { hiwasId } = req.query;
 
-    if (id) {
+    if (hiwasId) {
       try {
-        const report = await prisma.report.findUnique({
+        const report = await prisma.report.findMany({
           include: {
             reportImages: true,
-            reportPdfs: true
+            reportPdfs: true,
+            schedule: true,
+            reportByHiwas: true,
           },
-          where: { id: Number(id) }
+          where: { reportedByHiwasId: Number(hiwasId) }
         });
 
         if (!report) {
@@ -36,19 +38,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(200).json(report);
       } catch (error) {
         console.error('Error retrieving report:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
-      }
-    } else {
-      try {
-        const reports = await prisma.report.findMany({
-          orderBy: {
-            createdAt: 'desc',
-          },
-        });
-
-        return res.status(200).json(reports);
-      } catch (error) {
-        console.error('Error retrieving reports:', error);
         return res.status(500).json({ error: 'Internal Server Error' });
       }
     }
