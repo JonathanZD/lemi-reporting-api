@@ -3,18 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port ${PORT-9900}",
+    "dev": "next dev",
     "build": "yarn migrate:deploy && next build",
-    "start": "next start --port ${PORT-9900}",
+    "start": "next start",
     "migrate:dev": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "migrate:status": "prisma migrate status",
-    "pm2:start": "pm2 start 'npm start' --name lemi-reporting--api",
-    "pm2:restart": "pm2 restart lemi-reporting-api",
-    "pm2:reload": "pm2 reload lemi-reporting-api",
-    "pm2:stop": "pm2 stop lemi-reporting-api",
-    "pm2:delete": "pm2 delete lemi-reporting-api",
-    "pm2:list": "pm2 list"
+    "generate": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.18.0",
